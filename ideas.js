@@ -25,15 +25,15 @@ export const defaults = [
     cat: 'Collaboration'
   },
   {
-    name: 'Bug of the Week',
-    freq: 'Fortnightly',
+    name: 'Bug of the Month',
+    freq: 'Monthly',
     desc: 'Collaborative debugging challenge.',
     cat: 'Knowledge'
   },
   {
-    name: 'Innovation Friday',
+    name: 'AI innovation/Citizen Developers',
     freq: 'Monthly',
-    desc: 'AI, cloud and automation experiments.',
+    desc: 'Showcasing Tools and processes created by members of the community using AI',
     cat: 'Innovation'
   },
   {
@@ -47,5 +47,11 @@ export const defaults = [
     freq: 'Weekly',
     desc: 'Polls and technical discussions.',
     cat: 'Knowledge'
-  }
+  },
+  {
+    name: 'Nominate a team member',
+    freq: 'Monthly',
+    desc: 'Nominate yourself or a team member to showcase something they have worked on to showcase at the monthly dev comm meeting',
+    cat: 'Knowledge'
+  },
 ];
