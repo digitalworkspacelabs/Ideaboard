@@ -1,0 +1,2500 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developer Idea Board | 3D Experience</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #050816;
+  --panel: rgba(15, 23, 48, 0.72);
+  --cyan: #54e6ff;
+  --purple: #a78bfa;
+  --text: #f3f6ff;
+  --muted: #8995b5;
+  --border: rgba(160, 190, 255, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  position: relative;
+  background: #050816;
+  transition: background 1.2s ease;
+  overflow: hidden;
+}
+
+/* NIGHT BACKGROUND */
+
+body[data-theme="night"] {
+  background:
+    radial-gradient(ellipse at 50% 45%,
+      rgba(30, 20, 90, 0.8),
+      transparent 60%),
+    radial-gradient(ellipse at 20% 20%,
+      rgba(0, 100, 190, 0.35),
+      transparent 50%),
+    radial-gradient(ellipse at 80% 80%,
+      rgba(90, 20, 150, 0.3),
+      transparent 50%),
+    #03020b;
+}
+
+/* SUNSET BACKGROUND */
+body[data-theme="sunset"] {
+  background:
+    radial-gradient(ellipse at 50% 100%,
+      rgba(255, 224, 175, 0.85),
+      transparent 55%),
+
+    radial-gradient(ellipse at 20% 20%,
+      rgba(236, 139, 164, 0.65),
+      transparent 55%),
+
+    radial-gradient(ellipse at 80% 30%,
+      rgba(255, 177, 135, 0.65),
+      transparent 50%),
+
+    linear-gradient(
+      160deg,
+      #c77b9d,
+      #e9a0a7 45%,
+      #f5c5a0
+    );
+}
+
+/* DAY BACKGROUND */
+
+body[data-theme="day"] {
+  background:
+    radial-gradient(ellipse at 20% 35%,
+      rgba(255, 255, 255, 0.9),
+      transparent 35%),
+    radial-gradient(ellipse at 80% 45%,
+      rgba(255, 210, 220, 0.7),
+      transparent 35%),
+    linear-gradient(
+      180deg,
+      #79c7ed 0%,
+      #b9e4f6 55%,
+      #f5cbd7 100%
+    );
+}
+
+/* ATMOSPHERIC BACKGROUND LAYER */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+/* NIGHT GALAXY EFFECT */
+
+body[data-theme="night"]::before {
+  opacity: 1;
+
+  background:
+    radial-gradient(circle at 15% 25%,
+      rgba(0, 200, 255, 0.18),
+      transparent 25%),
+
+    radial-gradient(circle at 75% 65%,
+      rgba(130, 50, 255, 0.2),
+      transparent 30%),
+
+    radial-gradient(circle at 45% 85%,
+      rgba(30, 100, 255, 0.15),
+      transparent 25%),
+
+    repeating-linear-gradient(
+      125deg,
+      transparent 0%,
+      transparent 15%,
+      rgba(70, 120, 255, 0.035) 16%,
+      transparent 17%
+    );
+
+  filter: blur(25px);
+}
+
+/* SUNSET ATMOSPHERE */
+
+body[data-theme="sunset"]::before {
+  opacity: 1;
+
+  background:
+    radial-gradient(circle at 20% 25%,
+      rgba(255, 160, 190, 0.25),
+      transparent 30%),
+
+    radial-gradient(circle at 80% 35%,
+      rgba(255, 215, 160, 0.3),
+      transparent 30%),
+
+    radial-gradient(circle at 50% 85%,
+      rgba(255, 165, 135, 0.22),
+      transparent 35%);
+
+  filter: blur(45px);
+}
+
+/* DAY CLOUD ATMOSPHERE */
+
+body[data-theme="day"]::before {
+  opacity: 1;
+
+  background:
+    radial-gradient(ellipse at 15% 50%,
+      rgba(255, 255, 255, 0.75),
+      transparent 25%),
+
+    radial-gradient(ellipse at 80% 40%,
+      rgba(255, 220, 230, 0.65),
+      transparent 28%),
+
+    radial-gradient(ellipse at 45% 75%,
+      rgba(255, 255, 255, 0.5),
+      transparent 30%);
+
+  filter: blur(45px);
+}
+
+/* LIGHT ATMOSPHERIC MOVEMENT */
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+body[data-theme="night"]::after {
+  opacity: 1;
+
+  background-image:
+    radial-gradient(2px 2px at 20% 30%,
+      white, transparent),
+    radial-gradient(2px 2px at 70% 20%,
+      #8beaff, transparent),
+    radial-gradient(1px 1px at 40% 70%,
+      white, transparent),
+    radial-gradient(2px 2px at 85% 80%,
+      #c5a4ff, transparent),
+    radial-gradient(1px 1px at 10% 85%,
+      white, transparent);
+
+  background-size: 350px 350px;
+}
+
+/* BACKGROUND EFFECTS */
+
+.background-glow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(130px);
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow-one {
+  background: #286bff;
+  top: -300px;
+  left: -150px;
+}
+
+.glow-two {
+  background: #8b42ff;
+  bottom: -350px;
+  right: -100px;
+}
+
+/* THREE JS CANVAS */
+
+#scene {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+}
+
+#scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* MAIN UI */
+
+#ui {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* HEADER */
+
+.header {
+  position: absolute;
+  top: 28px;
+  left: 32px;
+  right: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.brand-icon {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  font-size: 21px;
+  background: linear-gradient(135deg, #36d9ff, #8063ff);
+  box-shadow: 0 0 30px rgba(84, 180, 255, .25);
+}
+
+.brand-name {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+.brand-subtitle {
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 5px;
+  letter-spacing: 2px;
+}
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #a8b5d4;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  background: #42edb5;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #42edb5;
+}
+
+/* LEFT TOOLBAR */
+
+#toolbar {
+  position: absolute;
+  top: 105px;
+  left: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  color: white;
+  transition: all .25s ease;
+}
+
+.tool-btn {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 17px;
+  border-radius: 13px;
+  background: rgba(20, 31, 61, .72);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .3px;
+}
+
+.tool-btn:hover {
+  background: rgba(52, 79, 133, .55);
+  border-color: rgba(84, 230, 255, .5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(39, 147, 255, .12);
+}
+
+.tool-btn.primary {
+  background: linear-gradient(120deg, #176bba, #6546c9);
+  border-color: rgba(150, 180, 255, .35);
+  box-shadow: 0 5px 25px rgba(68, 100, 255, .2);
+}
+
+.tool-icon {
+  font-size: 16px;
+}
+
+/* BOTTOM HELP PANEL */
+
+#help {
+  position: absolute;
+  bottom: 27px;
+  left: 32px;
+  padding: 15px 19px;
+  border-radius: 15px;
+  background: rgba(15, 24, 49, .72);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+  color: #a8b5d4;
+  font-size: 11px;
+  letter-spacing: .3px;
+}
+
+.help-title {
+  color: white;
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+
+.help-shortcut {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+/* BOTTOM RIGHT LEGEND */
+
+.legend {
+  position: absolute;
+  right: 32px;
+  bottom: 27px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 17px 20px;
+  background: rgba(15, 24, 49, .72);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  backdrop-filter: blur(18px);
+  pointer-events: auto;
+}
+
+.legend-title {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  color: #c1cce5;
+}
+
+.legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px currentColor;
+}
+
+/* MODALS */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 5, 17, .78);
+  backdrop-filter: blur(12px);
+  z-index: 20;
+  pointer-events: auto;
+  padding: 20px;
+}
+
+.card {
+  width: min(540px, 94vw);
+  padding: 32px;
+  border-radius: 24px;
+  background: linear-gradient(
+    145deg,
+    rgba(24, 36, 72, .97),
+    rgba(10, 16, 36, .98)
+  );
+  border: 1px solid rgba(150, 185, 255, .2);
+  box-shadow:
+    0 30px 100px rgba(0, 0, 0, .5),
+    0 0 50px rgba(66, 132, 255, .08);
+}
+
+.card h2 {
+  font-size: 23px;
+  margin-bottom: 22px;
+  letter-spacing: -.5px;
+}
+
+.card p {
+  color: #b3bfdc;
+  line-height: 1.8;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.card b {
+  color: var(--cyan);
+}
+
+/* FORM ELEMENTS */
+
+input, textarea, select {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  outline: none;
+  background: rgba(4, 10, 27, .8);
+  border: 1px solid rgba(150, 180, 255, .18);
+  color: white;
+  font-family: inherit;
+  font-size: 13px;
+  transition: border .2s ease, box-shadow .2s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(84, 230, 255, .08);
+}
+
+input::placeholder, textarea::placeholder {
+  color: #7180a4;
+}
+
+textarea {
+  height: 110px;
+  resize: vertical;
+}
+
+select option {
+  background: #101a36;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.action-btn {
+  padding: 12px 20px;
+  border-radius: 11px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.08);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.action-btn.primary {
+  background: linear-gradient(120deg, #1684c9, #7052d8);
+  border: none;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.15);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:700px) {
+  .header {
+    top: 18px;
+    left: 18px;
+    right: 18px;
+  }
+
+  #toolbar {
+    top: 90px;
+    left: 18px;
+  }
+
+  .tool-btn {
+    padding: 11px 13px;
+  }
+
+  #help {
+    left: 18px;
+    bottom: 18px;
+    font-size: 10px;
+  }
+
+  .legend {
+    right: 18px;
+    bottom: 18px;
+    padding: 12px;
+  }
+
+  .legend-item {
+    font-size: 9px;
+  }
+
+  .header-status {
+    display: none;
+  }
+
+  .card {
+    padding: 23px;
+  }
+}
+
+/* DAY / NIGHT / SUNSET SWITCHER */
+
+#theme-switcher {
+  position: absolute;
+  top: 105px;
+  right: 32px;
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+  padding: 8px;
+  border-radius: 16px;
+  background: rgba(20, 31, 61, 0.72);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(18px);
+}
+
+.theme-btn {
+  padding: 11px 15px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 600;
+  color: #c1cce5;
+}
+
+.theme-btn.active {
+  background: linear-gradient(
+    120deg,
+    #e66caa,
+    #f4a45e
+  );
+  color: white;
+}
+
+@media(max-width:700px) {
+  #theme-switcher {
+    top: 90px;
+    right: 18px;
+    gap: 3px;
+    padding: 5px;
+  }
+
+  .theme-btn {
+    padding: 9px 8px;
+    font-size: 9px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background-glow glow-one"></div>
+<div class="background-glow glow-two"></div>
+
+<div id="scene"></div>
+
+<div id="ui">
+
+  <header class="header">
+    <div class="brand">
+      <div class="brand-icon">✧</div>
+      <div>
+        <div class="brand-name">IDEA SPACE</div>
+        <div class="brand-subtitle">DEVELOPER COMMUNITY</div>
+      </div>
+    </div>
+
+    <div class="header-status">
+      <span class="status-dot"></span>
+      INTERACTIVE 3D ENVIRONMENT
+    </div>
+  </header>
+
+  <div id="toolbar">
+    <button class="tool-btn primary" id="add">
+      <span class="tool-icon">＋</span>
+      Add Idea
+    </button>
+
+    <button class="tool-btn" id="export">
+      <span class="tool-icon">↗</span>
+      Export
+    </button>
+
+    <button class="tool-btn" id="importBtn">
+      <span class="tool-icon">↙</span>
+      Import
+    </button>
+  </div>
+
+<div id="theme-switcher">
+  <button class="theme-btn" data-theme="night">🌌 Night</button>
+  <button class="theme-btn" data-theme="sunset">🌅 Sunset</button>
+  <button class="theme-btn" data-theme="day">☀️ Day</button>
+</div>
+
+  <div id="help">
+    <div class="help-title">INTERACTION GUIDE</div>
+    <div><span class="help-shortcut">Click</span> a bubble to explore</div>
+    <div><span class="help-shortcut">Shift + Click</span> to delete</div>
+    <div><span class="help-shortcut">Move</span> your mouse to navigate</div>
+  </div>
+
+ <div class="legend">
+  <div class="legend-title">IDEA CATEGORIES</div>
+
+  <div class="legend-item">
+    <span class="legend-dot" style="color:#83C9FF;background:#83C9FF"></span>
+    Knowledge
+  </div>
+
+  <div class="legend-item">
+    <span class="legend-dot" style="color:#83E8C8;background:#83E8C8"></span>
+    Collaboration
+  </div>
+
+  <div class="legend-item">
+    <span class="legend-dot" style="color:#C3A0FF;background:#C3A0FF"></span>
+    Innovation
+  </div>
+
+  <div class="legend-item">
+    <span class="legend-dot" style="color:#FFAAC2;background:#FFAAC2"></span>
+    Recognition
+  </div>
+
+  <div class="legend-item">
+    <span class="legend-dot" style="color:#83E5DF;background:#83E5DF"></span>
+    Growth
+  </div>
+</div>
+
+<!-- IDEA VIEWER -->
+
+<div class="modal" id="viewer">
+  <div class="card">
+    <h2 id="vTitle">Idea Title</h2>
+    <p><b id="vFreq"></b></p>
+    <p id="vDesc"></p>
+    <div class="modal-actions">
+      <button class="action-btn primary" id="closeView">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- IDEA EDITOR -->
+
+<div class="modal" id="editor">
+  <div class="card">
+    <h2>Create New Idea</h2>
+
+    <input id="t" placeholder="Idea title">
+
+    <input id="f" placeholder="Frequency (e.g. Weekly)">
+
+    <select id="c">
+      <option>Knowledge</option>
+      <option>Collaboration</option>
+      <option>Innovation</option>
+      <option>Recognition</option>
+      <option>Growth</option>
+    </select>
+
+    <textarea id="d" placeholder="Describe your idea..."></textarea>
+
+    <div class="modal-actions">
+      <button class="action-btn primary" id="save">Save Idea</button>
+      <button class="action-btn" id="cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- THREE.JS IMPORT -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.165.0/build/three.module.js"
+  }
+}
+</script>
+
+<script type="module">
+
+import * as THREE from 'three';
+
+import { RoomEnvironment } from
+  'https://unpkg.com/three@0.165.0/examples/jsm/environments/RoomEnvironment.js';
+
+/* =================================
+   SECTION 2: 3D ENVIRONMENT
+================================= */
+
+const container = document.getElementById('scene');
+
+const scene = new THREE.Scene();
+
+scene.background = null;
+
+scene.fog = new THREE.FogExp2(0x050816, 0.008);
+
+/* CAMERA */
+
+const camera = new THREE.PerspectiveCamera(
+  55,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  500
+);
+
+camera.position.set(0, 0, 25);
+
+/* RENDERER */
+
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+  alpha: true,
+  powerPreference: 'high-performance'
+});
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+renderer.setPixelRatio(
+  Math.min(window.devicePixelRatio, 1.75)
+);
+
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.25;
+
+container.appendChild(renderer.domElement);
+
+// NEUTRAL STUDIO GLASS ENVIRONMENT
+
+const pmremGenerator = new THREE.PMREMGenerator(renderer);
+
+const roomEnvironment = new RoomEnvironment();
+
+const glassEnvironment = pmremGenerator.fromScene(
+  roomEnvironment,
+  0.04
+).texture;
+
+roomEnvironment.dispose();
+pmremGenerator.dispose();
+
+/* =================================
+   LIGHTING SYSTEM
+================================= */
+
+/* Ambient illumination */
+
+const ambientLight = new THREE.AmbientLight(
+  0x829cff,
+  0.35
+);
+
+scene.add(ambientLight);
+
+/* Main cool light */
+
+const keyLight = new THREE.PointLight(
+  0x65caff,
+  110,
+  100
+);
+
+keyLight.position.set(-8, 12, 12);
+scene.add(keyLight);
+
+/* Purple fill light */
+
+const purpleLight = new THREE.PointLight(
+  0x9c56ff,
+  45,
+  100
+);
+
+purpleLight.position.set(10, -8, 8);
+scene.add(purpleLight);
+
+/* Cyan rim illumination */
+
+const cyanLight = new THREE.PointLight(
+  0x00e5ff,
+  80,
+  100
+);
+
+cyanLight.position.set(0, 10, -5);
+scene.add(cyanLight);
+
+/* Directional light */
+
+const directionalLight = new THREE.DirectionalLight(
+  0xffffff,
+  1.2
+);
+
+directionalLight.position.set(-5, 8, 15);
+scene.add(directionalLight);
+
+
+
+/* =================================
+   DAY / NIGHT / SUNSET THEME SYSTEM
+================================= */
+
+const themes = {
+
+  night: {
+    background: 0x050816,
+    fog: 0x050816,
+    fogDensity: 0.008,
+
+    ambient: 0x829cff,
+    key: 0x65caff,
+    purple: 0x9c56ff,
+    cyan: 0x00e5ff,
+
+    glowOne: '#286bff',
+    glowTwo: '#8b42ff'
+  },
+
+sunset: {
+  background: 0x542747,
+  fog: 0x75405b,
+  fogDensity: 0.004,
+
+  ambient: 0xffb6a1,
+  key: 0xffa05c,
+  purple: 0xff65a5,
+  cyan: 0xffd078,
+
+  glowOne: '#ff5c9a',
+  glowTwo: '#ff9b43'
+},
+
+  day: {
+    background: 0x9ac9ec,
+    fog: 0xb8d9ee,
+    fogDensity: 0.004,
+
+    ambient: 0xffffff,
+    key: 0xfff1d0,
+    purple: 0x9bbaff,
+    cyan: 0x8beaff,
+
+    glowOne: '#8bd5ff',
+    glowTwo: '#c3a8ff'
+  }
+
+};
+
+function setTheme(themeName) {
+
+  const theme = themes[themeName];
+
+  if (!theme) return;
+
+  // Background and fog
+  // Update CSS background theme
+document.body.dataset.theme = themeName;
+
+// Update Three.js fog
+scene.fog.color.setHex(theme.fog);
+scene.fog.density = theme.fogDensity;
+
+  // Lighting
+  ambientLight.color.setHex(theme.ambient);
+  keyLight.color.setHex(theme.key);
+  purpleLight.color.setHex(theme.purple);
+  cyanLight.color.setHex(theme.cyan);
+
+  // Background glow
+  document.querySelector('.glow-one')
+    .style.background = theme.glowOne;
+
+  document.querySelector('.glow-two')
+    .style.background = theme.glowTwo;
+
+  // Active button
+ document.querySelectorAll('.theme-btn')
+  .forEach(button => {
+
+    button.addEventListener('click', () => {
+
+      setTheme(button.dataset.theme);
+
+      updateLabelColours();
+
+    });
+
+  });
+
+  localStorage.setItem('ideaBoardTheme', themeName);
+
+// Update atmospheric orb colours
+  updateAtmosphereTheme(themeName);
+
+}
+
+// Theme button interactions
+document.querySelectorAll('.theme-btn')
+  .forEach(button => {
+
+    button.addEventListener('click', () => {
+
+      setTheme(button.dataset.theme);
+
+    });
+
+  });
+
+
+
+/* =================================
+   BACKGROUND PARTICLE SYSTEM
+================================= */
+
+const particleCount = 1100;
+
+const particleGeometry = new THREE.BufferGeometry();
+
+const particlePositions = new Float32Array(
+  particleCount * 3
+);
+
+const particleSizes = new Float32Array(
+  particleCount
+);
+
+for (let i = 0; i < particleCount; i++) {
+
+  particlePositions[i * 3] =
+    (Math.random() - 0.5) * 110;
+
+  particlePositions[i * 3 + 1] =
+    (Math.random() - 0.5) * 75;
+
+  particlePositions[i * 3 + 2] =
+    (Math.random() - 0.5) * 65;
+
+  particleSizes[i] =
+    Math.random() * 0.8 + 0.3;
+}
+
+particleGeometry.setAttribute(
+  'position',
+  new THREE.BufferAttribute(particlePositions, 3)
+);
+
+particleGeometry.setAttribute(
+  'size',
+  new THREE.BufferAttribute(particleSizes, 1)
+);
+
+const particleMaterial = new THREE.PointsMaterial({
+  color: 0x8ebcff,
+  size: 0.09,
+  transparent: true,
+  opacity: 0.65,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
+  sizeAttenuation: true
+});
+
+const particles = new THREE.Points(
+  particleGeometry,
+  particleMaterial
+);
+
+scene.add(particles);
+
+/* =================================
+   ATMOSPHERIC LIGHT ORBS
+================================= */
+
+const atmosphere = new THREE.Group();
+
+scene.add(atmosphere);
+
+function createAtmosphereOrb(
+  color,
+  x,
+  y,
+  z,
+  size,
+  opacity
+) {
+
+  const geometry = new THREE.SphereGeometry(
+    size,
+    24,
+    24
+  );
+
+  const material = new THREE.MeshBasicMaterial({
+    color,
+    transparent: true,
+    opacity,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  });
+
+  const orb = new THREE.Mesh(
+    geometry,
+    material
+  );
+
+  orb.position.set(x, y, z);
+
+  atmosphere.add(orb);
+
+  return orb;
+}
+
+const atmosphereOrbs = [
+  createAtmosphereOrb(
+    0x176bff, -15, 8, -18, 3.5, 0.12
+  ),
+
+  createAtmosphereOrb(
+    0x963dff, 15, -9, -20, 4, 0.10
+  ),
+
+  createAtmosphereOrb(
+    0x00dfff, 2, 16, -25, 3, 0.08
+  )
+];
+
+// RESTORE PREVIOUSLY SELECTED THEME
+setTheme(
+  localStorage.getItem('ideaBoardTheme') || 'night'
+);
+
+
+function updateAtmosphereTheme(themeName) {
+
+  if (themeName === 'sunset') {
+
+    atmosphereOrbs[0].material.color.setHex(0xff6b9d);
+    atmosphereOrbs[1].material.color.setHex(0xff8b45);
+    atmosphereOrbs[2].material.color.setHex(0xffd16b);
+
+  }
+
+  else if (themeName === 'day') {
+
+    atmosphereOrbs[0].material.color.setHex(0x8bd5ff);
+    atmosphereOrbs[1].material.color.setHex(0xb9a5ff);
+    atmosphereOrbs[2].material.color.setHex(0xffffff);
+
+  }
+
+  else {
+
+    atmosphereOrbs[0].material.color.setHex(0x176bff);
+    atmosphereOrbs[1].material.color.setHex(0x963dff);
+    atmosphereOrbs[2].material.color.setHex(0x00dfff);
+
+  }
+
+}
+
+
+/* =================================
+   MOUSE INTERACTION
+================================= */
+
+const mouse = new THREE.Vector2(0, 0);
+
+const targetCamera = new THREE.Vector2(0, 0);
+
+window.addEventListener('mousemove', (event) => {
+
+  mouse.x =
+    (event.clientX / window.innerWidth) * 2 - 1;
+
+  mouse.y =
+    -(event.clientY / window.innerHeight) * 2 + 1;
+
+  targetCamera.x = mouse.x * 0.85;
+  targetCamera.y = mouse.y * 0.55;
+
+});
+
+/* =================================
+   RESPONSIVE RESIZE
+================================= */
+
+window.addEventListener('resize', () => {
+
+  camera.aspect =
+    window.innerWidth / window.innerHeight;
+
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+  );
+
+  renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio, 1.75)
+  );
+
+});
+
+/* =================================
+   ANIMATION CLOCK
+================================= */
+
+const clock = new THREE.Clock();
+
+let animationTime = 0;
+
+function updateEnvironment(delta) {
+
+  animationTime += delta;
+
+  /* Slowly rotate particle field */
+
+  particles.rotation.y += delta * 0.012;
+
+  particles.rotation.x =
+    Math.sin(animationTime * 0.08) * 0.025;
+
+  /* Animate atmospheric orbs */
+
+  atmosphereOrbs.forEach((orb, index) => {
+
+    orb.position.y +=
+      Math.sin(animationTime * 0.4 + index) *
+      delta * 0.12;
+
+  });
+
+  /* Smooth camera movement */
+
+  camera.position.x +=
+    (targetCamera.x - camera.position.x) *
+    Math.min(1, delta * 1.5);
+
+  camera.position.y +=
+    (targetCamera.y - camera.position.y) *
+    Math.min(1, delta * 1.5);
+
+  camera.lookAt(0, 0, 0);
+
+}
+
+
+/* ==========================================
+   SECTION 3: PREMIUM GLASS BUBBLE SYSTEM
+========================================== */
+
+/* IDEA DATA */
+
+const defaults = [
+  {
+    name: 'IDEA BOARD',
+    freq: 'Community Hub',
+    desc: 'Developer community engagement ideas',
+    cat: 'Knowledge',
+    core: true
+  },
+  {
+    name: 'Tech Tip Tuesday',
+    freq: 'Weekly',
+    desc: 'Share shortcuts, tools and productivity hacks.',
+    cat: 'Knowledge'
+  },
+  {
+    name: 'Show & Tell',
+    freq: 'Fortnightly',
+    desc: 'Showcase projects and interesting solutions.',
+    cat: 'Collaboration'
+  },
+  {
+    name: 'Bug of the Week',
+    freq: 'Weekly',
+    desc: 'Collaborative debugging challenge.',
+    cat: 'Knowledge'
+  },
+  {
+    name: 'Expert AMA',
+    freq: 'Monthly',
+    desc: 'Ask architects and specialists questions.',
+    cat: 'Collaboration'
+  },
+  {
+    name: 'Developer Help Desk',
+    freq: 'Always On',
+    desc: 'Peer support and troubleshooting.',
+    cat: 'Growth'
+  },
+  {
+    name: 'Innovation Friday',
+    freq: 'Monthly',
+    desc: 'AI, cloud and automation experiments.',
+    cat: 'Innovation'
+  },
+  {
+    name: 'Developer Spotlight',
+    freq: 'Monthly',
+    desc: 'Recognise contributors.',
+    cat: 'Recognition'
+  },
+  {
+    name: 'Developer Pulse',
+    freq: 'Weekly',
+    desc: 'Polls and technical discussions.',
+    cat: 'Knowledge'
+  }
+];
+
+let ideas;
+
+try {
+  const saved = localStorage.getItem('ideaBoardV3');
+  ideas = saved ? JSON.parse(saved) : null;
+
+  if (!Array.isArray(ideas)) ideas = null;
+} catch {
+  ideas = null;
+}
+
+if (!ideas) {
+  ideas = defaults.map(item => ({ ...item }));
+}
+
+/* CATEGORY COLOURS */
+
+const colors = {
+  Knowledge:     0x75BFFF, // Crystal blue
+  Collaboration: 0x69DDB0, // Emerald mint
+  Innovation:    0xB18AFF, // Amethyst purple
+  Recognition:   0xFF91A8, // Coral pink
+  Growth:        0xFFD477  // Champagne gold
+};
+
+/* BUBBLE GROUP */
+
+const bubbleGroup = new THREE.Group();
+
+scene.add(bubbleGroup);
+
+let nodes = [];
+
+function updateLabelColours() {
+
+  const theme = document.body.dataset.theme;
+
+  let labelColour;
+
+  if (theme === 'day') {
+
+    labelColour = 0x29415e;
+
+  } else if (theme === 'sunset') {
+
+    labelColour = 0x713e50;
+
+  } else {
+
+    labelColour = 0xffffff;
+
+  }
+
+  nodes.forEach(node => {
+
+    node.label.material.color.setHex(labelColour);
+
+    node.label.material.opacity = 1;
+
+  });
+
+}
+
+/* SHARED GEOMETRY */
+
+const bubbleGeometry = new THREE.SphereGeometry(
+  1,
+  64,
+  64
+);
+
+/* GLASS EDGE SHADER */
+
+const glassMaterial = new THREE.ShaderMaterial({
+
+  uniforms: {
+    uColor: {
+      value: new THREE.Color(0x59c3ff)
+    },
+
+    uTime: {
+      value: 0
+    },
+
+    uOpacity: {
+      value: 0.85
+    }
+  },
+
+  vertexShader: `
+    varying vec3 vNormal;
+    varying vec3 vViewPosition;
+    varying vec3 vWorldPosition;
+
+    void main() {
+
+      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+
+      vNormal = normalize(normalMatrix * normal);
+
+      vViewPosition = -mvPosition.xyz;
+
+      vWorldPosition = position;
+
+      gl_Position = projectionMatrix * mvPosition;
+    }
+  `,
+
+  fragmentShader: `
+    uniform vec3 uColor;
+    uniform float uTime;
+    uniform float uOpacity;
+
+    varying vec3 vNormal;
+    varying vec3 vViewPosition;
+    varying vec3 vWorldPosition;
+
+    void main() {
+
+      vec3 normal = normalize(vNormal);
+      vec3 viewDir = normalize(vViewPosition);
+
+      float fresnel = pow(
+        1.0 - max(dot(normal, viewDir), 0.0),
+        2.4
+      );
+
+      float edge = smoothstep(
+        0.05,
+        0.95,
+        fresnel
+      );
+
+      float highlight = pow(
+        max(dot(normal, normalize(vec3(-0.4, 0.7, 1.0))), 0.0),
+        18.0
+      );
+
+      float iridescence =
+        sin(vWorldPosition.y * 5.0 + uTime * 0.5) * 0.5 + 0.5;
+
+      vec3 violet = vec3(0.55, 0.30, 1.0);
+      vec3 cyan = vec3(0.20, 0.85, 1.0);
+
+      vec3 color = mix(
+        uColor,
+        mix(cyan, violet, iridescence),
+        fresnel * 0.45
+      );
+
+      color += vec3(0.55, 0.8, 1.0) * highlight * 0.55;
+
+      float alpha = uOpacity * (
+        0.10 + edge * 0.85 + highlight * 0.25
+      );
+
+      gl_FragColor = vec4(color, alpha);
+    }
+  `,
+
+  transparent: true,
+  depthWrite: false,
+  side: THREE.FrontSide
+});
+
+/* INNER GLASS MATERIAL */
+
+
+
+function createInnerMaterial(color) {
+
+  const softColor = new THREE.Color(color).lerp(
+    new THREE.Color(0xffffff),
+    0.3
+  );
+
+  return new THREE.MeshPhysicalMaterial({
+
+    color: softColor,
+
+    metalness: 0.0,
+
+    // Crystal-clear surface
+    roughness: 0.025,
+
+    // Preserve the transparency
+    transmission: 0.999,
+    thickness: 1.8,
+    ior: 1.33,
+
+    // Restore beautiful glass reflections
+    envMap: glassEnvironment,
+    envMapIntensity: 0.7,
+
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.02,
+
+    // Gentle colour absorption
+    attenuationColor: softColor,
+    attenuationDistance: 2,
+
+    side: THREE.FrontSide
+
+  });
+
+}
+/* LABEL CREATION */
+
+function labelSprite(text) {
+
+  const canvas = document.createElement('canvas');
+
+  canvas.width = 2048;
+  canvas.height = 512;
+
+  const ctx = canvas.getContext('2d');
+
+  ctx.clearRect(0, 0, 1024, 256);
+
+ctx.font = '700 116px Inter, sans-serif';
+ctx.textAlign = 'center';
+ctx.textBaseline = 'middle';
+
+// Remove excessive glow
+ctx.shadowColor = 'transparent';
+ctx.shadowBlur = 0;
+
+// Crisp text
+ctx.fillStyle = '#ffffff';
+
+ctx.fillText(text, 1024, 256, 1920);
+
+const texture = new THREE.CanvasTexture(canvas);
+
+texture.colorSpace = THREE.SRGBColorSpace;
+
+// Improve text sharpness
+texture.minFilter = THREE.LinearMipmapLinearFilter;
+texture.magFilter = THREE.LinearFilter;
+
+texture.generateMipmaps = true;
+texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+  const material = new THREE.SpriteMaterial({
+
+    map: texture,
+    transparent: true,
+    depthWrite: false,
+    sizeAttenuation: true
+
+  });
+
+  const sprite = new THREE.Sprite(material);
+
+  sprite.scale.set(5.8, 1.45, 1);
+
+  return sprite;
+}
+
+function createBubble(idea, size) {
+
+const color = idea.core
+  ? 0xBFCBD8
+  : colors[idea.cat] || 0x88aaff;
+
+
+  const group = new THREE.Group();
+
+  // Main glass sphere
+  const glass = new THREE.Mesh(
+    bubbleGeometry,
+
+
+    createInnerMaterial(color)
+  );
+
+  glass.scale.setScalar(1);
+
+  group.add(glass);
+
+  // Very subtle luminous outer edge
+  
+const edgeMaterial = new THREE.MeshBasicMaterial({
+
+  color: color,
+
+  transparent: true,
+  opacity: 0.04,
+
+  blending: THREE.AdditiveBlending,
+
+  side: THREE.BackSide,
+
+  depthWrite: false
+
+});
+
+
+  const edge = new THREE.Mesh(
+    bubbleGeometry,
+    edgeMaterial
+  );
+
+  edge.scale.setScalar(1.025);
+
+  group.add(edge);
+
+  group.scale.setScalar(size);
+
+  group.userData = idea;
+
+  group.userData.baseScale = size;
+
+  bubbleGroup.add(group);
+
+  return group;
+
+}
+/* BUILD THE IDEA BOARD */
+
+function rebuild() {
+
+  /* Remove old objects */
+
+  nodes.forEach(node => {
+
+    bubbleGroup.remove(node.mesh);
+
+    node.mesh.traverse(object => {
+
+      if (object.isMesh) {
+
+        if (object.material !== glassMaterial) {
+          object.material.dispose();
+        }
+
+      }
+
+    });
+
+    bubbleGroup.remove(node.label);
+
+    node.label.material.map.dispose();
+    node.label.material.dispose();
+
+  });
+
+  nodes = [];
+
+  const outerIdeas = ideas.filter(item => !item.core);
+
+  const count = outerIdeas.length;
+
+  ideas.forEach((idea, index) => {
+
+    const isCore = !!idea.core;
+
+    const size = isCore ? 2.15 : 1.12;
+
+    const mesh = createBubble(idea, size);
+
+    let x = 0;
+    let y = 0;
+    let z = 0;
+
+    if (!isCore) {
+
+      const i = outerIdeas.indexOf(idea);
+
+      const angle =
+        (i / Math.max(count, 1)) * Math.PI * 2;
+
+      const radius = 9.3;
+
+      x = Math.cos(angle) * radius;
+
+      y = Math.sin(angle) * 5.2;
+
+      z = Math.sin(angle * 2) * 1.5;
+
+    }
+
+    mesh.position.set(x, y, z);
+
+    /* Label */
+
+    const label = labelSprite(idea.name);
+
+    label.position.set(
+      x,
+      y - size - 0.8,
+      z
+    );
+
+    bubbleGroup.add(label);
+
+    /* Animation data */
+
+    nodes.push({
+
+      mesh,
+      label,
+
+      baseX: x,
+      baseY: y,
+      baseZ: z,
+
+      phase: index * 0.85,
+
+      baseScale: size,
+
+      isCore
+
+    });
+
+  });
+ updateLabelColours();
+  persist();
+
+}
+
+/* SAVE IDEAS */
+
+function persist() {
+
+  try {
+    localStorage.setItem(
+      'ideaBoardV3',
+      JSON.stringify(ideas)
+    );
+  } catch (error) {
+    console.warn('Could not save ideas:', error);
+  }
+
+}
+
+/* INITIALISE BUBBLES */
+
+rebuild();
+
+/* ==========================================
+   END SECTION 3
+========================================== */
+
+/* ==========================================
+   SECTION 4: INTERACTION & ANIMATION
+========================================== */
+
+const raycaster = new THREE.Raycaster();
+
+let hoveredNode = null;
+
+/* MOUSE POSITION */
+
+renderer.domElement.addEventListener(
+  'pointermove',
+  (event) => {
+
+    const rect = renderer.domElement.getBoundingClientRect();
+
+    mouse.x =
+      ((event.clientX - rect.left) / rect.width) * 2 - 1;
+
+    mouse.y =
+      -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+  }
+);
+
+/* RESET HOVER WHEN LEAVING CANVAS */
+
+renderer.domElement.addEventListener(
+  'pointerleave',
+  () => {
+
+    mouse.set(10, 10);
+
+    renderer.domElement.style.cursor = 'default';
+
+  }
+);
+
+/* FIND BUBBLE UNDER MOUSE */
+
+function detectBubble() {
+
+  raycaster.setFromCamera(mouse, camera);
+
+  const objects = nodes.map(node => node.mesh);
+
+  const intersections = raycaster.intersectObjects(
+    objects,
+    true
+  );
+
+  if (!intersections.length) {
+    return null;
+  }
+
+  const hitObject = intersections[0].object;
+
+  return nodes.find(node =>
+    node.mesh === hitObject ||
+    node.mesh.children.includes(hitObject)
+  ) || null;
+
+}
+
+/* OPEN IDEA VIEWER */
+
+function openIdea(idea) {
+
+  document.getElementById('vTitle').textContent =
+    idea.name;
+
+  document.getElementById('vFreq').textContent =
+    idea.freq;
+
+  document.getElementById('vDesc').textContent =
+    idea.desc;
+
+  document.getElementById('viewer').style.display =
+    'flex';
+
+}
+
+/* CLOSE VIEWER */
+
+document.getElementById('closeView').addEventListener(
+  'click',
+  () => {
+
+    document.getElementById('viewer').style.display =
+      'none';
+
+  }
+);
+
+
+/* BUBBLE CLICK INTERACTION */
+
+renderer.domElement.addEventListener(
+  'click',
+  (event) => {
+
+    const rect = renderer.domElement.getBoundingClientRect();
+
+    mouse.x =
+      ((event.clientX - rect.left) / rect.width) * 2 - 1;
+
+    mouse.y =
+      -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    const selected = detectBubble();
+
+    if (!selected) return;
+
+    const idea = selected.mesh.userData;
+
+    /* SHIFT + CLICK = DELETE */
+
+    if (event.shiftKey && !idea.core) {
+
+      // Trigger bubble pop animation
+      createBubblePop(selected.mesh);
+
+      // Remove idea from saved data
+      ideas = ideas.filter(item => item !== idea);
+
+      // Remove label
+      bubbleGroup.remove(selected.label);
+
+      selected.label.material.map.dispose();
+      selected.label.material.dispose();
+
+      // Remove from active nodes
+      nodes = nodes.filter(node => node !== selected);
+
+      persist();
+
+      hoveredNode = null;
+
+      return;
+    }
+
+    /* NORMAL CLICK = VIEW */
+
+    openIdea(idea);
+
+  }
+);
+
+
+const popEffects = [];
+
+function createBubblePop(mesh) {
+
+  const color = colors[mesh.userData.cat] || 0x70C9FF;
+
+  const worldPosition = new THREE.Vector3();
+
+  mesh.getWorldPosition(worldPosition);
+
+  // Glowing burst particles
+  const particleCount = 32;
+
+  const geometry = new THREE.BufferGeometry();
+
+  const positions = [];
+  const velocities = [];
+
+  for (let i = 0; i < particleCount; i++) {
+
+    positions.push(
+      worldPosition.x,
+      worldPosition.y,
+      worldPosition.z
+    );
+
+    const direction = new THREE.Vector3(
+      Math.random() * 2 - 1,
+      Math.random() * 2 - 1,
+      Math.random() * 2 - 1
+    ).normalize();
+
+    velocities.push(
+      direction.multiplyScalar(
+        2 + Math.random() * 5
+      )
+    );
+
+  }
+
+  geometry.setAttribute(
+    'position',
+    new THREE.Float32BufferAttribute(positions, 3)
+  );
+
+  const material = new THREE.PointsMaterial({
+
+    color: color,
+    size: 0.16,
+    transparent: true,
+    opacity: 1,
+
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+
+  });
+
+  const particles = new THREE.Points(
+    geometry,
+    material
+  );
+
+  scene.add(particles);
+
+  popEffects.push({
+
+    particles,
+    velocities,
+    material,
+    age: 0,
+    duration: 0.65
+
+  });
+
+  // Immediately remove bubble from the visible scene
+  bubbleGroup.remove(mesh);
+
+}
+
+
+/* Animate pop particles */
+
+function animatePopEffects(delta) {
+
+  for (let i = popEffects.length - 1; i >= 0; i--) {
+
+    const effect = popEffects[i];
+
+    effect.age += delta;
+
+    const progress = Math.min(
+      effect.age / effect.duration,
+      1
+    );
+
+    const positions =
+      effect.particles.geometry.attributes.position;
+
+    for (let j = 0; j < effect.velocities.length; j++) {
+
+      positions.array[j * 3] +=
+        effect.velocities[j].x * delta;
+
+      positions.array[j * 3 + 1] +=
+        effect.velocities[j].y * delta;
+
+      positions.array[j * 3 + 2] +=
+        effect.velocities[j].z * delta;
+
+      effect.velocities[j].multiplyScalar(0.97);
+
+    }
+
+    positions.needsUpdate = true;
+
+    effect.material.opacity = 1 - progress;
+
+    effect.material.size = 0.16 * (1 - progress * 0.6);
+
+    if (progress >= 1) {
+
+      scene.remove(effect.particles);
+
+      effect.particles.geometry.dispose();
+      effect.material.dispose();
+
+      popEffects.splice(i, 1);
+
+    }
+
+  }
+
+}
+
+/* ==========================================
+   BUBBLE ANIMATION
+========================================== */
+
+function animateBubbles(delta, elapsed) {
+
+  nodes.forEach((node, index) => {
+
+    const mesh = node.mesh;
+
+
+    /* Floating movement */
+
+    const floatOffset = Math.sin(
+      elapsed * 0.65 + node.phase
+    ) * 0.24;
+
+    const floatOffsetX = Math.cos(
+      elapsed * 0.35 + node.phase
+    ) * 0.10;
+
+    mesh.position.y =
+      node.baseY + floatOffset;
+
+    mesh.position.x =
+      node.baseX + floatOffsetX;
+
+    mesh.position.z =
+      node.baseZ +
+      Math.sin(elapsed * 0.45 + node.phase) * 0.20;
+
+    /* Gentle rotation */
+
+    mesh.rotation.y += delta * 0.10;
+
+    mesh.rotation.x =
+      Math.sin(elapsed * 0.35 + node.phase) * 0.06;
+
+    /* Update shader animation */
+
+    mesh.children.forEach(child => {
+
+      if (
+        child.material &&
+        child.material.uniforms &&
+        child.material.uniforms.uTime
+      ) {
+
+        child.material.uniforms.uTime.value = elapsed;
+
+      }
+
+    });
+
+    /* Hover enlargement */
+
+    const isHovered = hoveredNode === node;
+
+    const targetScale = node.baseScale *
+      (isHovered ? 1.14 : 1);
+
+    const currentScale = mesh.scale.x;
+
+    const smoothScale = THREE.MathUtils.lerp(
+      currentScale,
+      targetScale,
+      Math.min(1, delta * 8)
+    );
+
+    mesh.scale.setScalar(smoothScale);
+
+    /* Label follows bubble */
+
+    node.label.position.set(
+      mesh.position.x,
+      mesh.position.y - node.baseScale - 0.85,
+      mesh.position.z
+    );
+
+    /* Label visibility and subtle animation */
+
+    node.label.material.opacity = THREE.MathUtils.lerp(
+      node.label.material.opacity ?? 1,
+      isHovered ? 1 : 0.88,
+      Math.min(1, delta * 5)
+    );
+
+  });
+
+}
+
+/* ==========================================
+   HOVER DETECTION
+========================================== */
+
+function updateHover() {
+
+  const found = detectBubble();
+
+  hoveredNode = found;
+
+  renderer.domElement.style.cursor =
+    found ? 'pointer' : 'default';
+
+}
+
+/* ==========================================
+   MAIN ANIMATION LOOP
+========================================== */
+
+
+
+function animate() {
+
+  requestAnimationFrame(animate);
+
+  const delta = Math.min(clock.getDelta(), 0.05);
+
+  const elapsed = clock.elapsedTime;
+
+  /* Background environment */
+  updateEnvironment(delta);
+
+  /* Bubble animations */
+  animateBubbles(delta, elapsed);
+
+  /* Bubble pop particles */
+  animatePopEffects(delta);
+
+  /* Mouse interaction */
+  updateHover();
+
+  /* Render scene */
+  renderer.render(scene, camera);
+
+}
+
+/* START EXPERIENCE */
+
+animate();
+
+/* ==========================================
+   END SECTION 4
+========================================== */
+
+/* ==========================================
+   SECTION 5: APPLICATION FUNCTIONALITY
+========================================== */
+
+/* ELEMENT REFERENCES */
+
+const addBtn = document.getElementById('add');
+const saveBtn = document.getElementById('save');
+const cancelBtn = document.getElementById('cancel');
+
+const editor = document.getElementById('editor');
+const viewer = document.getElementById('viewer');
+
+const titleInput = document.getElementById('t');
+const frequencyInput = document.getElementById('f');
+const categoryInput = document.getElementById('c');
+const descriptionInput = document.getElementById('d');
+
+/* ==========================================
+   ADD IDEA
+========================================== */
+
+addBtn.addEventListener('click', () => {
+
+  editor.style.display = 'flex';
+
+  titleInput.focus();
+
+});
+
+/* ==========================================
+   SAVE IDEA
+========================================== */
+
+saveBtn.addEventListener('click', () => {
+
+  const name = titleInput.value.trim();
+
+  const freq = frequencyInput.value.trim();
+
+  const desc = descriptionInput.value.trim();
+
+  const cat = categoryInput.value;
+
+  if (!name) {
+
+    titleInput.focus();
+
+    titleInput.style.borderColor = '#ff6584';
+
+    return;
+
+  }
+
+  titleInput.style.borderColor = '';
+
+  const newIdea = {
+
+    name: name,
+
+    freq: freq || 'Adhoc',
+
+    desc: desc || 'No description provided.',
+
+    cat: colors[cat] ? cat : 'Knowledge',
+
+    core: false
+
+  };
+
+  ideas.push(newIdea);
+
+
+
+  persist();
+
+  rebuild();
+
+  closeEditor();
+
+});
+
+/* ==========================================
+   CLOSE EDITOR
+========================================== */
+
+function closeEditor() {
+
+  editor.style.display = 'none';
+
+  titleInput.value = '';
+
+  frequencyInput.value = '';
+
+  descriptionInput.value = '';
+
+  categoryInput.value = 'Knowledge';
+
+  titleInput.style.borderColor = '';
+
+}
+
+/* CANCEL BUTTON */
+
+cancelBtn.addEventListener('click', closeEditor);
+
+/* ==========================================
+   EXPORT IDEAS
+========================================== */
+
+document.getElementById('export').addEventListener(
+  'click',
+  () => {
+
+    const exportData = {
+
+      application: 'Developer Idea Board',
+
+      version: 3,
+
+      exportedAt: new Date().toISOString(),
+
+      ideas: ideas
+
+    };
+
+    const blob = new Blob(
+      [JSON.stringify(exportData, null, 2)],
+      { type: 'application/json' }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+
+    link.href = url;
+
+    link.download = 'developer-idea-board.json';
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+  }
+);
+
+/* ==========================================
+   IMPORT IDEAS
+========================================== */
+
+document.getElementById('importBtn').addEventListener(
+  'click',
+  () => {
+
+    const input = document.createElement('input');
+
+    input.type = 'file';
+
+    input.accept = '.json,application/json';
+
+    input.onchange = async (event) => {
+
+      const file = event.target.files?.[0];
+
+      if (!file) return;
+
+      try {
+
+        const text = await file.text();
+
+        const imported = JSON.parse(text);
+
+        const importedIdeas = Array.isArray(imported)
+          ? imported
+          : imported.ideas;
+
+        if (!Array.isArray(importedIdeas)) {
+
+          throw new Error('Invalid idea board format.');
+
+        }
+
+        if (importedIdeas.length > 200) {
+
+          throw new Error('Maximum 200 ideas allowed.');
+
+        }
+
+        const validIdeas = importedIdeas.filter(item => {
+
+          return (
+            item &&
+            typeof item.name === 'string' &&
+            item.name.trim().length > 0 &&
+            typeof item.freq === 'string' &&
+            typeof item.desc === 'string' &&
+            typeof item.cat === 'string' &&
+            colors[item.cat] !== undefined
+          );
+
+        }).map(item => ({
+
+          name: item.name.trim().slice(0, 100),
+
+          freq: item.freq.slice(0, 60),
+
+          desc: item.desc.slice(0, 1000),
+
+          cat: item.cat,
+
+          core: item.core === true
+
+        }));
+
+        if (!validIdeas.length) {
+
+          throw new Error('No valid ideas found in this file.');
+
+        }
+
+        ideas = validIdeas;
+
+        rebuild();
+
+        alert(
+          'Successfully imported ' +
+          validIdeas.length +
+          ' ideas!'
+        );
+
+      } catch (error) {
+
+        alert('Import failed: ' + error.message);
+
+      }
+
+    };
+
+    input.click();
+
+  }
+);
+
+/* ==========================================
+   MODAL INTERACTIONS
+========================================== */
+
+/* Close when clicking outside the card */
+
+[editor, viewer].forEach(modal => {
+
+  modal.addEventListener('click', event => {
+
+    if (event.target === modal) {
+
+      modal.style.display = 'none';
+
+      if (modal === editor) {
+        closeEditor();
+      }
+
+    }
+
+  });
+
+});
+
+/* Keyboard shortcuts */
+
+window.addEventListener('keydown', event => {
+
+  if (event.key === 'Escape') {
+
+    closeEditor();
+
+    viewer.style.display = 'none';
+
+  }
+
+  if (
+    event.key === 'Enter' &&
+    editor.style.display === 'flex' &&
+    event.target.tagName === 'INPUT'
+  ) {
+
+    event.preventDefault();
+
+    saveBtn.click();
+
+  }
+
+});
+
+/* ==========================================
+   INITIAL APPLICATION STATE
+========================================== */
+
+persist();
+
+console.log(
+  'Developer Idea Board initialized successfully.'
+);
+
+/* ==========================================
+   END SECTION 5
+========================================== */
+
+
+/* =================================
+   END SECTION 2
+================================= */
+</script>
+</body>
+</html>
+
+
